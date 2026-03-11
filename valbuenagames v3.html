@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="shortcut icon" href="Logo_LEGO_ValbuenaGames_1080_1.ico" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ValbuenaGames — Canal Nº1 de LEGO en Español</title>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&family=Press+Start+2P&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --lego-red:    #E3000B;
+      --lego-yellow: #F5C400;
+      --lego-blue:   #006CB7;
+      --bg:          #0c0c0c;
+      --surface:     #141414;
+      --surface2:    #1e1e1e;
+      --border:      #2a2a2a;
+      --text:        #F0EDE8;
+      --muted:       #7a7672;
+      --font-head:   'Press Start 2P', monospace;
+      --font-body:   'Exo 2', sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:#000}
+    ::-webkit-scrollbar-thumb{background:var(--lego-yellow);border-radius:3px}
+
+    .stripe{height:5px;background:linear-gradient(90deg,var(--lego-red) 33.33%,var(--lego-yellow) 33.33% 66.66%,var(--lego-blue) 66.66%)}
+
+    /* ── NAV ── */
+    #navbar{position:fixed;top:0;left:0;width:100%;z-index:200;background:rgba(12,12,12,.93);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+    .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem}
+    .nav-brand{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+    .nav-logo-mark{width:34px;height:34px;border-radius:4px;background:var(--lego-yellow);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:.55rem;color:#000;box-shadow:3px 3px 0 var(--lego-red);flex-shrink:0}
+    .nav-brand-text{font-family:var(--font-head);font-size:.62rem;color:var(--lego-yellow);text-shadow:2px 2px 0 var(--lego-red)}
+    .nav-links{display:flex;list-style:none;gap:2rem}
+    .nav-links a{color:var(--muted);text-decoration:none;font-weight:700;font-size:.82rem;letter-spacing:.5px;transition:color .2s;text-transform:uppercase}
+    .nav-links a:hover{color:var(--lego-yellow)}
+    .nav-btn{display:flex;align-items:center;gap:.5rem;background:var(--lego-red);color:#fff;font-weight:900;font-size:.82rem;padding:.5rem 1.2rem;border-radius:4px;text-decoration:none;border:2px solid rgba(255,255,255,.15);box-shadow:3px 3px 0 rgba(0,0,0,.5);transition:transform .2s,box-shadow .2s}
+    .nav-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 rgba(0,0,0,.5)}
+    .nav-btn svg{width:15px;height:15px;fill:currentColor}
+
+    /* ── HERO ── */
+    #hero{min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;padding-top:60px}
+    .hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 65% 40%,rgba(227,0,11,.09) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 15% 70%,rgba(0,108,183,.08) 0%,transparent 60%),var(--bg)}
+    .hero-studs{position:absolute;inset:0;z-index:0;background-image:radial-gradient(circle,rgba(245,196,0,.11) 2.5px,transparent 2.5px);background-size:36px 36px;animation:studDrift 50s linear infinite}
+    @keyframes studDrift{to{background-position:36px 36px}}
+    .float-bricks{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+    .fb{position:absolute;border-radius:4px;animation:fbFloat linear infinite}
+    @keyframes fbFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:.12}90%{opacity:.12}100%{transform:translateY(-200px) rotate(720deg);opacity:0}}
+
+    .hero-content{position:relative;z-index:1;flex:1;display:flex;align-items:center;max-width:1200px;margin:0 auto;width:100%;padding:4rem 1.5rem 2rem;gap:4rem}
+    .hero-left{flex:1;min-width:0}
+    .hero-right{flex-shrink:0;width:310px;display:flex;flex-direction:column;align-items:center;gap:1.5rem}
+
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(227,0,11,.12);border:1px solid var(--lego-red);color:var(--lego-red);font-size:.72rem;font-weight:900;padding:.35rem .9rem;border-radius:3px;margin-bottom:1.5rem;letter-spacing:.5px;text-transform:uppercase}
+    .hero-title{font-family:var(--font-head);font-size:clamp(1.3rem,4vw,3rem);line-height:1.45;margin-bottom:1.2rem;color:#fff}
+    .hero-title .yt{color:var(--lego-red)}
+    .hero-title .lego{color:var(--lego-yellow)}
+    .hero-subtitle{font-size:clamp(.95rem,2vw,1.15rem);color:#999;line-height:1.85;max-width:520px;margin-bottom:2.5rem}
+    .hero-ctas{display:flex;gap:1rem;flex-wrap:wrap}
+    .cta-primary{background:var(--lego-yellow);color:#000;font-family:var(--font-body);font-weight:900;font-size:.95rem;padding:.85rem 2rem;border-radius:4px;text-decoration:none;border:3px solid #000;box-shadow:4px 4px 0 #000;transition:transform .2s,box-shadow .2s;white-space:nowrap}
+    .cta-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #000}
+    .cta-secondary{background:transparent;color:var(--text);font-family:var(--font-body);font-weight:700;font-size:.95rem;padding:.85rem 2rem;border-radius:4px;text-decoration:none;border:2px solid var(--border);transition:border-color .2s,color .2s;white-space:nowrap}
+    .cta-secondary:hover{border-color:var(--lego-yellow);color:var(--lego-yellow)}
+
+    /* Channel Card */
+    .channel-card{width:100%;background:var(--surface);border:3px solid var(--lego-yellow);border-radius:6px;overflow:hidden;box-shadow:6px 6px 0 var(--lego-red),12px 12px 0 rgba(0,0,0,.3)}
+    .channel-card-header{background:linear-gradient(160deg,#2a0000,var(--lego-red));padding:1.75rem 1rem 1.25rem;text-align:center;position:relative;overflow:hidden}
+    .channel-card-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,215,0,.15) 2px,transparent 2px);background-size:22px 22px}
+    .avatar-wrap{width:92px;height:92px;border-radius:50%;background:linear-gradient(135deg,var(--lego-yellow),#e06000);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border:4px solid #000;box-shadow:0 0 0 3px var(--lego-yellow);position:relative;z-index:1;overflow:hidden;font-size:2.4rem}
+    .avatar-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+    .channel-card-name{font-family:var(--font-head);font-size:.58rem;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,.5);margin-bottom:.4rem;position:relative;z-index:1;line-height:1.7}
+    .channel-handle{font-size:.8rem;color:rgba(255,255,255,.55);position:relative;z-index:1}
+    .channel-card-body{padding:1.1rem 1.2rem 1.3rem}
+    .card-stats{display:flex;justify-content:space-around;padding:.7rem 0;border-bottom:1px solid var(--border);margin-bottom:.85rem}
+    .cs-item{text-align:center}
+    .cs-n{font-family:var(--font-head);font-size:.5rem;color:var(--lego-yellow);display:block;margin-bottom:.2rem}
+    .cs-l{font-size:.7rem;color:var(--muted);font-weight:700}
+    .channel-desc{font-size:.8rem;line-height:1.75;color:#999;text-align:center}
+    .sub-btn{display:block;margin-top:1rem;background:var(--lego-red);color:#fff;font-weight:900;font-size:.85rem;text-align:center;padding:.6rem 1rem;border-radius:4px;text-decoration:none;border:2px solid rgba(255,255,255,.15);transition:filter .2s}
+    .sub-btn:hover{filter:brightness(1.15)}
+
+    /* Brick decoration row */
+    .brick-row{position:relative;z-index:1;display:flex;height:24px;overflow:hidden}
+    .brick-seg{flex:1;height:100%}
+
+    /* ── STATS ── */
+    .stats-strip{position:relative;z-index:2;background:var(--lego-yellow);border-top:4px solid #000;border-bottom:4px solid #000;padding:1.3rem 1rem;display:flex;justify-content:center;gap:clamp(.8rem,4vw,4rem);flex-wrap:wrap}
+    .stat-item{text-align:center}
+    .stat-n{font-family:var(--font-head);font-size:clamp(.85rem,2.2vw,1.4rem);color:#000;display:block}
+    .stat-l{font-size:.73rem;font-weight:700;color:#444;margin-top:.15rem;text-transform:uppercase;letter-spacing:.5px}
+
+    /* ── SECTIONS ── */
+    .section{position:relative;padding:5rem 1.5rem}
+    .container{max-width:1200px;margin:0 auto}
+    .section-eyebrow{display:block;font-family:var(--font-head);font-size:.48rem;color:var(--lego-yellow);letter-spacing:3px;text-transform:uppercase;margin-bottom:.7rem}
+    .section-heading{font-family:var(--font-head);font-size:clamp(.85rem,2.2vw,1.4rem);line-height:1.6;margin-bottom:1rem}
+    .section-lead{font-size:1.02rem;line-height:1.85;color:#999;max-width:680px}
+
+    /* ── HISTORIA ── */
+    #historia{background:var(--surface);background-image:radial-gradient(circle,rgba(0,108,183,.07) 2px,transparent 2px);background-size:32px 32px}
+    .historia-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+    .timeline{margin-top:2.5rem;position:relative}
+    .tl-line{position:absolute;left:6px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--lego-yellow),var(--lego-blue))}
+    .tl-item{display:flex;gap:1.5rem;padding-bottom:2rem;padding-left:1.8rem;position:relative}
+    .tl-dot{position:absolute;left:0;top:5px;width:14px;height:14px;background:var(--lego-yellow);border:2px solid #000;border-radius:50%;box-shadow:0 0 8px var(--lego-yellow)}
+    .tl-year{font-family:var(--font-head);font-size:.52rem;color:var(--lego-yellow);margin-bottom:.4rem;white-space:nowrap}
+    .tl-text{font-size:.9rem;line-height:1.8;color:#bbb}
+
+    .portrait{background:var(--surface2);border:3px solid var(--lego-yellow);border-radius:6px;overflow:hidden;box-shadow:6px 6px 0 var(--lego-red);position:sticky;top:85px}
+    .portrait-hero{background:linear-gradient(180deg,#1a0000,var(--lego-red));padding:2rem 1.5rem 1.5rem;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;overflow:hidden}
+    .portrait-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,215,0,.15) 2px,transparent 2px);background-size:22px 22px}
+    .portrait-avatar{width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,var(--lego-yellow),#e06000);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;border:4px solid #000;box-shadow:0 0 0 3px var(--lego-yellow),4px 4px 0 #000;position:relative;z-index:1;overflow:hidden;font-size:2.5rem}
+    .portrait-avatar img{width:100%;height:100%;object-fit:cover}
+    .portrait-name{font-family:var(--font-head);font-size:.7rem;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,.5);margin-bottom:.3rem;position:relative;z-index:1;line-height:1.6}
+    .portrait-handle{font-size:.8rem;color:rgba(255,255,255,.55);position:relative;z-index:1}
+    .portrait-body{padding:1.4rem}
+    .portrait-bio{font-size:.88rem;line-height:1.8;color:#aaa;margin-bottom:1.2rem}
+    .tag-grid{display:flex;flex-wrap:wrap;gap:.45rem}
+    .ptag{font-size:.75rem;font-weight:900;padding:.28rem .7rem;border-radius:3px;border:2px solid #000}
+    .ptag-red{background:var(--lego-red);color:#fff}
+    .ptag-blue{background:var(--lego-blue);color:#fff}
+    .ptag-yellow{background:var(--lego-yellow);color:#000}
+    .ptag-dark{background:#2a2a2a;color:var(--lego-yellow);border-color:var(--lego-yellow)}
+    .collab-section{margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
+    .collab-label{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.6rem;display:block}
+    .collab-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+    .collab-chip{background:var(--surface);border:1px solid var(--border);color:#bbb;font-size:.68rem;font-weight:700;padding:.2rem .55rem;border-radius:3px}
+
+    /* ── VIDEOS ── */
+    #videos{background:var(--bg);background-image:radial-gradient(circle,rgba(227,0,11,.05) 2px,transparent 2px);background-size:32px 32px}
+    .videos-header{text-align:center;margin-bottom:3rem}
+    .videos-header .section-lead{margin:0 auto}
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem}
+    .video-card{background:var(--surface);border:2px solid var(--border);border-radius:6px;overflow:hidden;transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;box-shadow:3px 3px 0 rgba(0,0,0,.4);cursor:pointer}
+    .video-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.5);border-color:var(--lego-yellow)}
+    .video-card.featured{border-color:var(--lego-yellow);box-shadow:4px 4px 0 var(--lego-yellow)}
+    .video-card.featured:hover{box-shadow:0 20px 50px rgba(245,196,0,.15)}
+    .video-thumb{position:relative;padding-top:56.25%;background:#111;overflow:hidden}
+    .video-badge{position:absolute;top:.7rem;left:.7rem;font-family:var(--font-head);font-size:.42rem;padding:.28rem .65rem;border-radius:3px;border:2px solid #000;letter-spacing:.5px;z-index:5}
+    .badge-gold{background:var(--lego-yellow);color:#000}
+    .badge-red{background:var(--lego-red);color:#fff}
+    .badge-blue{background:var(--lego-blue);color:#fff}
+    .vthumb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;transition:opacity .3s,transform .4s}
+    .video-card:hover .vthumb-img{opacity:1;transform:scale(1.04)}
+    .play-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:68px;background:rgba(0,0,0,.7);border:3px solid var(--lego-red);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .25s,transform .25s;z-index:4}
+    .video-card:hover .play-overlay{background:var(--lego-red);transform:translate(-50%,-50%) scale(1.12)}
+    .play-overlay svg{width:28px;height:28px;fill:#fff;margin-left:4px}
+    .video-info{padding:1rem 1.15rem 1.25rem}
+    .video-game-tag{font-size:.68rem;font-weight:900;color:var(--lego-yellow);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem;display:block}
+    .video-title{font-family:var(--font-head);font-size:.55rem;line-height:1.75;margin-bottom:.5rem;color:#eee}
+    .video-meta{display:flex;gap:1rem;font-size:.76rem;color:var(--muted);font-weight:700}
+    .view-all-wrap{text-align:center;margin-top:2.5rem}
+
+    /* ── VIDEO MODAL ── */
+    #vmodal{
+      position:fixed;inset:0;z-index:999;
+      background:rgba(0,0,0,.92);
+      display:flex;align-items:center;justify-content:center;
+      padding:1rem;
+      opacity:0;pointer-events:none;
+      transition:opacity .3s ease;
+    }
+    #vmodal.open{opacity:1;pointer-events:all}
+    .vmodal-box{
+      position:relative;
+      width:100%;max-width:900px;
+      background:#000;
+      border:3px solid var(--lego-yellow);
+      border-radius:6px;
+      box-shadow:0 0 60px rgba(0,0,0,.8);
+      transform:scale(.95);
+      transition:transform .3s ease;
+      overflow:hidden;
+    }
+    #vmodal.open .vmodal-box{transform:scale(1)}
+    .vmodal-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.75rem 1rem;
+      background:var(--surface);
+      border-bottom:2px solid var(--border);
+    }
+    .vmodal-title{font-family:var(--font-head);font-size:.5rem;color:var(--lego-yellow);line-height:1.6}
+    .vmodal-close{
+      background:var(--lego-red);color:#fff;border:none;
+      width:32px;height:32px;border-radius:4px;
+      font-size:1.1rem;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;transition:filter .2s;
+    }
+    .vmodal-close:hover{filter:brightness(1.2)}
+    .vmodal-player{position:relative;padding-top:56.25%;background:#000}
+    .vmodal-player iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+    .vmodal-yt-btn{
+      position:absolute;inset:0;
+      display:none;flex-direction:column;
+      align-items:center;justify-content:center;gap:1rem;
+      background:#0c0c0c;text-align:center;padding:2rem;
+    }
+    .vmodal-yt-btn.show{display:flex}
+    .vmodal-yt-btn p{font-size:.9rem;color:var(--muted);max-width:360px;line-height:1.7}
+    .vmodal-yt-link{
+      display:inline-flex;align-items:center;gap:.6rem;
+      background:var(--lego-red);color:#fff;
+      font-weight:900;font-size:1rem;
+      padding:.75rem 1.75rem;border-radius:4px;
+      text-decoration:none;border:2px solid rgba(255,255,255,.2);
+      transition:filter .2s;
+    }
+    .vmodal-yt-link:hover{filter:brightness(1.15)}
+
+    /* ── JUEGOS ── */
+    #juegos{background:var(--surface);background-image:radial-gradient(circle,rgba(245,196,0,.06) 2px,transparent 2px);background-size:32px 32px}
+    .games-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem}
+    .game-filters{display:flex;gap:.5rem;flex-wrap:wrap}
+    .filter-btn{background:var(--surface2);border:2px solid var(--border);color:var(--muted);font-size:.78rem;font-weight:700;padding:.32rem .85rem;border-radius:20px;cursor:pointer;transition:all .2s;font-family:var(--font-body)}
+    .filter-btn.active,.filter-btn:hover{border-color:var(--lego-yellow);color:var(--lego-yellow);background:rgba(245,196,0,.07)}
+    .games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:.7rem}
+    .game-chip{background:var(--surface2);border:2px solid var(--border);border-radius:4px;padding:.85rem .7rem;text-align:center;cursor:default;transition:all .25s ease;box-shadow:2px 2px 0 #000}
+    .game-chip:hover{border-color:var(--lego-yellow);color:var(--lego-yellow);transform:translate(-2px,-2px);box-shadow:4px 4px 0 #000}
+    .game-chip.lego-type:hover{border-color:var(--lego-red);color:var(--lego-red)}
+    .gi{font-size:1.25rem;display:block;margin-bottom:.32rem}
+    .gn{font-size:.76rem;font-weight:700;color:inherit;line-height:1.3}
+
+    /* ── RECONOCIMIENTO ── */
+    #reconocimiento{background:var(--bg);background-image:radial-gradient(circle,rgba(0,108,183,.06) 2px,transparent 2px);background-size:32px 32px}
+    .rec-header{text-align:center;margin-bottom:3rem}
+    .rec-header .section-lead{margin:0 auto}
+    .awards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem}
+    .award-card{background:var(--surface);border:2px solid var(--border);border-left:6px solid var(--lego-yellow);border-radius:4px;padding:1.7rem;position:relative;z-index:0;transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s cubic-bezier(.22,1,.36,1);box-shadow:3px 3px 0 rgba(245,196,0,0)}
+    .award-card:nth-child(2){border-left-color:var(--lego-red);   box-shadow:3px 3px 0 rgba(227,0,11,0)}
+    .award-card:nth-child(3){border-left-color:var(--lego-blue);  box-shadow:3px 3px 0 rgba(0,108,183,0)}
+    .award-card:nth-child(4){border-left-color:#00c851;           box-shadow:3px 3px 0 rgba(0,200,81,0)}
+    .awards-grid .award-card:hover{transform:scale(1.04) translateY(-5px);z-index:2;box-shadow:0 12px 32px rgba(245,196,0,.12),5px 5px 0 rgba(245,196,0,.9)}
+    .awards-grid .award-card:nth-child(2):hover{box-shadow:0 12px 32px rgba(227,0,11,.12),5px 5px 0 rgba(227,0,11,.9)}
+    .awards-grid .award-card:nth-child(3):hover{box-shadow:0 12px 32px rgba(0,108,183,.12),5px 5px 0 rgba(0,108,183,.9)}
+    .awards-grid .award-card:nth-child(4):hover{box-shadow:0 12px 32px rgba(0,200,81,.12), 5px 5px 0 rgba(0,200,81,.9)}
+    .award-icon{font-size:2rem;margin-bottom:.8rem}
+    .award-title{font-family:var(--font-head);font-size:.55rem;line-height:1.75;color:var(--lego-yellow);margin-bottom:.6rem}
+    .award-card:nth-child(2) .award-title{color:#ff7070}
+    .award-card:nth-child(3) .award-title{color:#5ab8ff}
+    .award-card:nth-child(4) .award-title{color:#00c851}
+    .award-text{font-size:.88rem;line-height:1.8;color:var(--muted)}
+
+    /* ── REDES ── */
+    #redes{background:var(--surface);border-top:1px solid var(--border)}
+    .redes-inner{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.8rem;max-width:680px;margin:0 auto}
+    .social-grid{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center}
+    .social-btn{display:flex;align-items:center;gap:.55rem;background:var(--surface2);border:2px solid var(--border);color:var(--text);font-weight:700;font-size:.88rem;padding:.62rem 1.3rem;border-radius:4px;text-decoration:none;transition:all .25s;box-shadow:3px 3px 0 #000}
+    .social-btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000}
+    .social-btn.yt{border-color:var(--lego-red);color:var(--lego-red)}.social-btn.yt:hover{background:var(--lego-red);color:#fff}
+    .social-btn.tw{border-color:var(--lego-blue);color:var(--lego-blue)}.social-btn.tw:hover{background:var(--lego-blue);color:#fff}
+    .social-btn.tt{border-color:#888;color:#888}.social-btn.tt:hover{background:#333;color:#fff;border-color:#fff}
+    .social-btn.ig{border-color:#e1306c;color:#e1306c}.social-btn.ig:hover{background:#e1306c;color:#fff}
+    .social-btn svg{width:17px;height:17px;fill:currentColor}
+
+    /* ── FOOTER ── */
+    footer{background:#000;padding:2rem 1.5rem;text-align:center}
+    .footer-logo{font-family:var(--font-head);font-size:.72rem;color:var(--lego-yellow);text-shadow:2px 2px 0 var(--lego-red);margin-bottom:.7rem}
+    .footer-note{font-size:.8rem;color:var(--muted);line-height:1.9}
+    .footer-note a{color:var(--lego-yellow);text-decoration:none}
+
+    /* ── REVEAL ── */
+    .reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.visible{opacity:1;transform:none}
+    .reveal-left{opacity:0;transform:translateX(-26px);transition:opacity .6s ease,transform .6s ease}
+    .reveal-left.visible{opacity:1;transform:none}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      .hero-content{flex-direction:column-reverse;gap:2rem;padding-top:2.5rem}
+      .hero-right{width:100%;max-width:380px;align-self:center}
+      .historia-grid{grid-template-columns:1fr}
+      .portrait{position:static}
+      .nav-links{display:none}
+    }
+    @media(max-width:580px){
+      .hero-ctas{flex-direction:column}
+      .cta-primary,.cta-secondary{text-align:center}
+      .video-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div class="stripe"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#hero">
+      <div class="nav-logo-mark">VG</div>
+      <span class="nav-brand-text">ValbuenaGames</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#historia">Historia</a></li>
+      <!-- <li><a href="#videos">Vídeos</a></li> !-->
+      <li><a href="#juegos">Juegos</a></li>
+      <li><a href="#reconocimiento">Éxito</a></li>
+    </ul>
+    <a class="nav-btn" href="https://www.youtube.com/@ValbuenaGames" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.08 12.08 0 00-7.64 0A4.83 4.83 0 014.41 6.69a50.56 50.56 0 000 10.62 4.83 4.83 0 003.77 2.75 12.08 12.08 0 007.64 0 4.83 4.83 0 003.77-2.75 50.56 50.56 0 000-10.62zM9.75 15V9l6 3z"/></svg>
+      Suscribirse
+    </a>
+  </div>
+  <div class="stripe"></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-studs"></div>
+  <div class="float-bricks" id="fbContainer"></div>
+
+  <div class="hero-content">
+    <div class="hero-left reveal-left">
+      <div class="hero-eyebrow">🧱 Canal Nº1 de LEGO en Español</div>
+      <h1 class="hero-title">
+        El youtuber que<br/>
+        construyó su<br/>
+        <span class="yt">YouTube</span><br/>
+        ladrillo a <span class="lego">ladrillo</span>
+      </h1>
+      <p class="hero-subtitle">
+        Toni Valbuena lleva más de 12 años subiendo gameplays cada día sin excepción.
+        Primero fue su pasión, después su profesión y hoy es la referencia absoluta de
+        los juegos de LEGO en castellano.
+      </p>
+      <div class="hero-ctas">
+        <a class="cta-primary" href="https://www.youtube.com/@ValbuenaGames" target="_blank">🎬 Ver sus vídeos</a>
+        <a class="cta-secondary" href="#historia">Conocer su historia →</a>
+      </div>
+    </div>
+
+    <div class="hero-right reveal">
+      <div class="channel-card">
+        <div class="channel-card-header">
+          <div class="avatar-wrap">
+            <img src="Logo_LEGO_ValbuenaGames_1080_1.png" alt="ValbuenaGames" onerror="this.parentElement.innerHTML='🧱'"/>
+          </div>
+          <div class="channel-card-name">ValbuenaGames</div>
+          <div class="channel-handle">@ValbuenaGames</div>
+        </div>
+        <div class="channel-card-body">
+          <div class="card-stats">
+            <div class="cs-item"><span class="cs-n">+830K</span><span class="cs-l">Suscriptores</span></div>
+            <div class="cs-item"><span class="cs-n">+400M</span><span class="cs-l">Visitas</span></div>
+            <div class="cs-item"><span class="cs-n">+5.800</span><span class="cs-l">Vídeos</span></div>
+          </div>
+          <p class="channel-desc">Canal Nº1 de LEGO en Español. Gameplays y walkthroughs desde 2012, todos los días sin excepción.</p>
+          <a class="sub-btn" href="https://www.youtube.com/@ValbuenaGames?sub_confirmation=1" target="_blank" rel="noopener">▶ Suscribirse gratis</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="brick-row">
+    <div class="brick-seg" style="background:#E3000B"></div>
+    <div class="brick-seg" style="background:#c00009"></div>
+    <div class="brick-seg" style="background:#E3000B"></div>
+    <div class="brick-seg" style="background:#F5C400"></div>
+    <div class="brick-seg" style="background:#d4aa00"></div>
+    <div class="brick-seg" style="background:#F5C400"></div>
+    <div class="brick-seg" style="background:#006CB7"></div>
+    <div class="brick-seg" style="background:#005fa3"></div>
+    <div class="brick-seg" style="background:#006CB7"></div>
+    <div class="brick-seg" style="background:#E3000B"></div>
+    <div class="brick-seg" style="background:#F5C400"></div>
+    <div class="brick-seg" style="background:#006CB7"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item"><span class="stat-n">830.000</span><span class="stat-l">Suscriptores</span></div>
+  <div class="stat-item"><span class="stat-n">+400M</span><span class="stat-l">Visualizaciones</span></div>
+  <div class="stat-item"><span class="stat-n">+5.800</span><span class="stat-l">Vídeos</span></div>
+  <div class="stat-item"><span class="stat-n">2012</span><span class="stat-l">Desde</span></div>
+  <div class="stat-item"><span class="stat-n">Semanal</span><span class="stat-l">Frecuencia</span></div>
+  <div class="stat-item"><span class="stat-n">14+</span><span class="stat-l">Años activo</span></div>
+</div>
+
+<!-- HISTORIA -->
+<section class="section" id="historia">
+  <div class="container">
+    <div class="historia-grid">
+      <div class="reveal-left">
+        <span class="section-eyebrow">// Su historia</span>
+        <h2 class="section-heading">De Lloret de Mar<br/>al Top de YouTube</h2>
+        <p class="section-lead">Antonio "Toni" Valbuena nació el 23 de febrero de 1985 en Lloret de Mar, Girona. Lo que comenzó como una pasión personal por los videojuegos se transformó en uno de los canales gamers más longevos y queridos de habla hispana.</p>
+        <div class="timeline">
+          <div class="tl-line"></div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div>
+              <div class="tl-year">2011 — 2012</div>
+              <div class="tl-text">Crea su canal el 11 de septiembre de 2012. Sus primeros vídeos son gameplays variados, el canal crece con una comunidad muy fiel desde el principio.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div>
+              <div class="tl-year">2013 — 2015</div>
+              <div class="tl-text">Descubre el potencial de los juegos de LEGO y los convierte en el sello del canal. LEGO Marvel Super Heroes se convierte en el vídeo más visto con más de 3,3 millones de reproducciones.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div>
+              <div class="tl-year">2016 — 2020</div>
+              <div class="tl-text">Supera los 100.000 suscriptores. Expande el contenido a Uncharted 4, The Last of Us, la saga Batman Arkham completa y muchos más títulos triple-A para todas las edades.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div>
+              <div class="tl-year">2021 — Hoy</div>
+              <div class="tl-text">Supera los 800K suscriptores. Lanza la serie LEGO Remember en Xbox Series X. Colabora con Ubisoft, EA, Capcom, PlayStation, Xbox y muchas más marcas del sector.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="portrait">
+          <div class="portrait-hero">
+            <div class="portrait-avatar">
+              <img src="Cara_de_Toni_Valbuena.png" alt="Toni Valbuena" onerror="this.style.display='none'"/>
+            </div>
+            <div class="portrait-name">Toni Valbuena</div>
+            <div class="portrait-handle">@ValbuenaGames · Lloret de Mar, ES 🇪🇸</div>
+          </div>
+          <div class="portrait-body">
+            <p class="portrait-bio">Creador de contenido desde 2012. Especialista en juegos de LEGO y gameplays de aventura. Canal 100% <em>family friendly</em> sin palabrotas, con una comunidad multigeneracional que lleva más de una década acompañándole.</p>
+            <div class="tag-grid">
+              <span class="ptag ptag-red">🧱 LEGO Nº1</span>
+              <span class="ptag ptag-yellow">🎮 Gamer</span>
+              <span class="ptag ptag-blue">🇪🇸 España</span>
+              <span class="ptag ptag-dark">📅 +14 años</span>
+              <span class="ptag ptag-red">👨‍👧‍👦 Family</span>
+              <span class="ptag ptag-blue">📱 TikTok</span>
+            </div>
+            <div class="collab-section">
+              <span class="collab-label">Colaboraciones oficiales</span>
+              <div class="collab-chips">
+                <span class="collab-chip">Ubisoft</span>
+                <span class="collab-chip">EA</span>
+                <span class="collab-chip">Capcom</span>
+                <span class="collab-chip">PlayStation</span>
+                <span class="collab-chip">Xbox</span>
+                <span class="collab-chip">Bandai Namco</span>
+                <span class="collab-chip">SEGA</span>
+                <span class="collab-chip">2K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="vmodal" role="dialog" aria-modal="true">
+  <div class="vmodal-box">
+    <div class="vmodal-header">
+      <div class="vmodal-title" id="vmodalTitle">Cargando vídeo…</div>
+      <button class="vmodal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="vmodal-player">
+      <iframe id="vmodalIframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="vmodal-yt-btn" id="vmodalFallback">
+        <p>Este vídeo tiene la reproducción integrada desactivada por el canal. Puedes verlo directamente en YouTube.</p>
+        <a class="vmodal-yt-link" id="vmodalYtLink" href="#" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.08 12.08 0 00-7.64 0A4.83 4.83 0 014.41 6.69a50.56 50.56 0 000 10.62 4.83 4.83 0 003.77 2.75 12.08 12.08 0 007.64 0 4.83 4.83 0 003.77-2.75 50.56 50.56 0 000-10.62zM9.75 15V9l6 3z"/></svg>
+          Ver en YouTube
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<section class="section" id="videos">
+  <div class="container">
+    <div class="videos-header reveal">
+      <span class="section-eyebrow">// Sus vídeos</span>
+      <h2 class="section-heading">Lo más visto & lo más reciente</h2>
+      <p class="section-lead">Desde el gameplay que le puso en el mapa hasta sus últimas series, ValbuenaGames mezcla nostalgia, humor y dedicación total en cada vídeo.</p>
+    </div>
+
+    <div class="video-grid">
+
+      <div class="video-card featured reveal"
+           onclick="openModal('cCUZoY4RjyQ','https://www.youtube.com/watch?v=cCUZoY4RjyQ','🧱 LEGO Marvel Super Heroes · Cap. 1')">
+        <div class="video-thumb">
+          <div class="video-badge badge-gold">🏆 Más Visto</div>
+          <img class="vthumb-img" src="https://img.youtube.com/vi/cCUZoY4RjyQ/maxresdefault.jpg" alt="LEGO Marvel Super Heroes Cap 1" onerror="this.src='https://img.youtube.com/vi/cCUZoY4RjyQ/hqdefault.jpg'"/>
+          <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+        <div class="video-info">
+          <span class="video-game-tag">🧱 LEGO Marvel Super Heroes</span>
+          <div class="video-title">Gameplay Guía en Español · Cap. 1<br/>"¡Vengadores, reuníos!"</div>
+          <div class="video-meta"><span>👁 +2,3M visualizaciones</span><span>📅 2013</span></div>
+        </div>
+      </div>
+
+      <div class="video-card reveal"
+           onclick="openModal('dtkjQbylc0A','https://www.youtube.com/watch?v=dtkjQbylc0A','🧱 LEGO Ninjago Película · Cap. 1')">
+        <div class="video-thumb">
+          <div class="video-badge badge-red">🎯 Favorito de la Comunidad</div>
+          <img class="vthumb-img" src="https://img.youtube.com/vi/dtkjQbylc0A/maxresdefault.jpg" alt="LEGO Ninjago Pelicula Cap 1" onerror="this.src='https://img.youtube.com/vi/dtkjQbylc0A/hqdefault.jpg'"/>
+          <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+        <div class="video-info">
+          <span class="video-game-tag">🧱 LEGO Ninjago Película</span>
+          <div class="video-title">Gameplay Español · Cap. 1<br/>"¡Buenos días, Ninjago!"</div>
+          <div class="video-meta"><span>📅 2017</span></div>
+        </div>
+      </div>
+
+      <div class="video-card reveal"
+           onclick="openModal('Q7WI8I-FkFc','https://www.youtube.com/watch?v=Q7WI8I-FkFc','🧱 LEGO Marvel Super Heroes 2 · Cap. 1')">
+        <div class="video-thumb">
+          <div class="video-badge badge-blue">⭐ Serie Destacada</div>
+          <img class="vthumb-img" src="https://img.youtube.com/vi/Q7WI8I-FkFc/maxresdefault.jpg" alt="LEGO Marvel Super Heroes 2 Cap 1" onerror="this.src='https://img.youtube.com/vi/Q7WI8I-FkFc/hqdefault.jpg'"/>
+          <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        </div>
+        <div class="video-info">
+          <span class="video-game-tag">🧱 LEGO Marvel Super Heroes 2</span>
+          <div class="video-title">Gameplay Español · Cap. 1<br/>"Chronopolis"</div>
+          <div class="video-meta"><span>📅 2017</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="view-all-wrap reveal">
+      <a class="cta-primary" href="https://www.youtube.com/@ValbuenaGames/videos" target="_blank" rel="noopener">Ver todos los vídeos en YouTube →</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- JUEGOS -->
+<section class="section" id="juegos">
+  <div class="container">
+    <div class="games-header reveal">
+      <div>
+        <span class="section-eyebrow">// Su catálogo</span>
+        <h2 class="section-heading">Más allá de LEGO</h2>
+      </div>
+      <div class="game-filters">
+        <button class="filter-btn active" onclick="filterGames('all',this)">Todos</button>
+        <button class="filter-btn" onclick="filterGames('lego',this)">🧱 LEGO</button>
+        <button class="filter-btn" onclick="filterGames('aaa',this)">🎮 Triple-A</button>
+      </div>
+    </div>
+    <div class="games-grid reveal" id="gamesGrid">
+      <div class="game-chip lego-type" data-cat="lego"><span class="gi">🧱</span><span class="gn">LEGO Marvel</span></div>
+      <div class="game-chip lego-type" data-cat="lego"><span class="gi">🧱</span><span class="gn">LEGO Batman</span></div>
+      <div class="game-chip lego-type" data-cat="lego"><span class="gi">🧱</span><span class="gn">LEGO Star Wars</span></div>
+      <div class="game-chip lego-type" data-cat="lego"><span class="gi">🧱</span><span class="gn">LEGO HP</span></div>
+      <div class="game-chip lego-type" data-cat="lego"><span class="gi">🧱</span><span class="gn">LEGO Ninjago</span></div>
+      <div class="game-chip lego-type" data-cat="lego"><span class="gi">🧱</span><span class="gn">LEGO LOTR</span></div>
+      <div class="game-chip lego-type" data-cat="lego"><span class="gi">🧱</span><span class="gn">LEGO Hobbit</span></div>
+      <div class="game-chip lego-type" data-cat="lego"><span class="gi">🧱</span><span class="gn">LEGO DC</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">🦁</span><span class="gn">Uncharted 4</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">🌿</span><span class="gn">The Last of Us</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">🦇</span><span class="gn">Batman Arkham</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">⚔️</span><span class="gn">Far Cry</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">⛏️</span><span class="gn">Minecraft</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">🚗</span><span class="gn">Need for Speed</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">💀</span><span class="gn">Dead Rising</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">💥</span><span class="gn">Just Cause</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">🧟</span><span class="gn">Resident Evil</span></div>
+      <div class="game-chip" data-cat="aaa"><span class="gi">🌾</span><span class="gn">Rune Factory</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- RECONOCIMIENTO -->
+<section class="section" id="reconocimiento">
+  <div class="container">
+    <div class="rec-header reveal">
+      <span class="section-eyebrow">// ¿Por qué es famoso?</span>
+      <h2 class="section-heading">El motivo de su éxito</h2>
+      <p class="section-lead">ValbuenaGames no es famoso por un vídeo viral, sino por algo mucho más valioso: la constancia. Catorce años subiendo contenido de calidad han construido una comunidad leal que vuelve cada día.</p>
+    </div>
+    <div class="awards-grid">
+      <div class="award-card reveal">
+        <div class="award-icon">🧱</div>
+        <div class="award-title">Nº1 de LEGO<br/>en Español</div>
+        <p class="award-text">Su autoproclamado título lo avala la audiencia. Ningún otro canal en castellano tiene una cobertura tan completa y consistente de los juegos de LEGO.</p>
+      </div>
+      <div class="award-card reveal">
+        <div class="award-icon">🕐</div>
+        <div class="award-title">Más de 14<br/>años activo</div>
+        <p class="award-text">Comenzó en 2012 y sigue publicando vídeos a diario. Una longevidad que muy pocos creadores de contenido gaming pueden presumir en España.</p>
+      </div>
+      <div class="award-card reveal">
+        <div class="award-icon">👨‍👧‍👦</div>
+        <div class="award-title">Comunidad<br/>familiar</div>
+        <p class="award-text">Contenido apto para todas las edades. Padres que crecieron con él ahora ven sus vídeos con sus hijos. Una comunidad multigeneracional única.</p>
+      </div>
+      <div class="award-card reveal">
+        <div class="award-icon">📊</div>
+        <div class="award-title">400M+<br/>visualizaciones</div>
+        <p class="award-text">Más de 400 millones de reproducciones acumuladas con más de 5.800 vídeos publicados. Un número que crece cada día gracias a su dedicación.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REDES -->
+<section class="section" id="redes">
+  <div class="container">
+    <div class="redes-inner reveal">
+      <span class="section-eyebrow">// Síguele en todas partes</span>
+      <h2 class="section-heading">Toni está en todas partes</h2>
+      <div class="social-grid">
+        <a class="social-btn yt" href="https://www.youtube.com/@ValbuenaGames" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.08 12.08 0 00-7.64 0A4.83 4.83 0 014.41 6.69a50.56 50.56 0 000 10.62 4.83 4.83 0 003.77 2.75 12.08 12.08 0 007.64 0 4.83 4.83 0 003.77-2.75 50.56 50.56 0 000-10.62zM9.75 15V9l6 3z"/></svg>
+          YouTube
+        </a>
+        <a class="social-btn tw" href="https://www.twitch.tv/valbuenagames" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>
+          Twitch
+        </a>
+        <a class="social-btn tt" href="https://www.tiktok.com/@tonivalbuena" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tiktok" viewBox="0 0 16 16">
+  <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z"/></svg>
+          TikTok
+        </a>
+        <a class="social-btn ig" href="https://www.instagram.com/toni_valbuena" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="stripe"></div>
+<footer>
+  <div class="footer-logo">ValbuenaGames</div>
+  <p class="footer-note">
+    Página oficial — Todo el crédito es de
+    <a href="https://www.youtube.com/@ValbuenaGames" target="_blank" rel="noopener">Toni Valbuena</a>.
+    <br/>© 2026 · Hecho con 🧱 y amor por Angel
+  </p>
+</footer>
+
+<script>
+  /* FLOATING BRICKS */
+  (function(){
+    const c=document.getElementById('fbContainer');
+    const cols=['#E3000B','#F5C400','#006CB7','#00A650','#FF6600'];
+    for(let i=0;i<22;i++){
+      const b=document.createElement('div');b.className='fb';
+      const w=14+Math.random()*40,h=9+Math.random()*18;
+      Object.assign(b.style,{
+        width:w+'px',height:h+'px',
+        background:cols[Math.floor(Math.random()*cols.length)],
+        left:Math.random()*100+'%',
+        animationDuration:(10+Math.random()*18)+'s',
+        animationDelay:-(Math.random()*16)+'s',
+      });
+      c.appendChild(b);
+    }
+  })();
+
+  /* VIDEO MODAL */
+  function openModal(videoId, ytUrl, title){
+    const modal   = document.getElementById('vmodal');
+    const iframe  = document.getElementById('vmodalIframe');
+    const titleEl = document.getElementById('vmodalTitle');
+    const fallback= document.getElementById('vmodalFallback');
+    const ytLink  = document.getElementById('vmodalYtLink');
+
+    titleEl.textContent = title;
+    ytLink.href = ytUrl;
+    fallback.classList.remove('show');
+    iframe.src = '';
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Slight delay so modal animates in first, then load iframe
+    setTimeout(()=>{
+      iframe.src = 'https://www.youtube-nocookie.com/embed/'+videoId+'?autoplay=1&rel=0&modestbranding=1';
+    }, 200);
+
+    // Detect Error 153 / embed blocked after 4s with no load
+    iframe._embedTimer = setTimeout(()=>{
+      // If iframe contentWindow is accessible and shows error, show fallback
+      try {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        if(doc && doc.body && doc.body.innerText.includes('153')){
+          fallback.classList.add('show');
+        }
+      } catch(e){
+        // cross-origin, can't read — assume it loaded fine
+      }
+    }, 4000);
+  }
+
+  function closeModal(){
+    const modal  = document.getElementById('vmodal');
+    const iframe = document.getElementById('vmodalIframe');
+    clearTimeout(iframe._embedTimer);
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(()=>{ iframe.src = ''; }, 300);
+  }
+
+  // Close on backdrop click
+  document.getElementById('vmodal').addEventListener('click', function(e){
+    if(e.target === this) closeModal();
+  });
+  // Close on Escape key
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+  /* SCROLL REVEAL */
+  const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.1});
+  document.querySelectorAll('.reveal,.reveal-left').forEach(r=>obs.observe(r));
+
+  /* GAME FILTER */
+  function filterGames(cat,btn){
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.game-chip').forEach(c=>{
+      c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
+    });
+  }
+
+  /* NAV shrink */
+  const nav=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>{
+    nav.style.background=scrollY>60?'rgba(0,0,0,.97)':'rgba(12,12,12,.93)';
+  },{passive:true});
+</script>
+</body>
+</html>
