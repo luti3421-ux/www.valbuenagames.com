@@ -324,18 +324,55 @@
     .reveal-left{opacity:0;transform:translateX(-26px);transition:opacity .6s ease,transform .6s ease}
     .reveal-left.visible{opacity:1;transform:none}
 
+    /* ── HAMBURGER ── */
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.4rem;background:none;border:none}
+    .nav-hamburger span{display:block;width:24px;height:2px;background:var(--lego-yellow);border-radius:2px;transition:all .3s}
+    .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-hamburger.open span:nth-child(2){opacity:0}
+    .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-mobile{display:none;flex-direction:column;background:rgba(10,10,10,.98);border-top:3px solid var(--lego-yellow);padding:1rem 1.5rem 1.5rem}
+    .nav-mobile.open{display:flex}
+    .nav-mobile a{color:var(--muted);text-decoration:none;font-weight:700;font-size:.9rem;padding:.65rem 0;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.5px;transition:color .2s}
+    .nav-mobile a:last-child{border-bottom:none}
+    .nav-mobile a:hover{color:var(--lego-yellow)}
+
     /* ── RESPONSIVE ── */
+    .stats-feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem}
     @media(max-width:900px){
+      .nav-links{display:none}
+      .nav-hamburger{display:flex}
       .hero-content{flex-direction:column-reverse;gap:2rem;padding-top:2.5rem}
       .hero-right{width:100%;max-width:380px;align-self:center}
       .historia-grid{grid-template-columns:1fr}
       .portrait{position:static}
-      .nav-links{display:none}
+      .ruleta-wrap{flex-direction:column}
+      .awards-grid{grid-template-columns:repeat(2,1fr)}
+      .stats-feature-grid{grid-template-columns:1fr}
+    }
+    @media(max-width:700px){
+      .section{padding:3rem 1.2rem}
+      .chart-bars{overflow-x:auto;overflow-y:visible;gap:.3rem;padding-bottom:.5rem}
+      .chart-col{min-width:36px}
+      .chart-val{font-size:.32rem}
+      .chart-year{font-size:.58rem}
+      .tl-card.active{grid-template-columns:1fr}
+      .tl-card-year{font-size:2rem}
     }
     @media(max-width:580px){
       .hero-ctas{flex-direction:column}
       .cta-primary,.cta-secondary{text-align:center}
       .video-grid{grid-template-columns:1fr}
+      .interactivo-tabs{gap:.35rem}
+      .itab{font-size:.42rem;padding:.45rem .8rem}
+      .trivia-nav{flex-wrap:wrap}
+      .ruleta-canvas-wrap{width:min(280px,85vw);height:min(280px,85vw)}
+    }
+    @media(max-width:540px){
+      .awards-grid{grid-template-columns:1fr}
+      .trivia-options{grid-template-columns:1fr}
+      .stats-feature-grid{grid-template-columns:1fr}
+      .tl-nav{gap:.3rem}
+      .tl-nav-btn{font-size:.38rem;padding:.35rem .6rem}
     }
 
     /* ══════════════════════════════
@@ -343,7 +380,6 @@
     ══════════════════════════════ */
     #estadisticas{background:var(--surface);background-image:radial-gradient(circle,rgba(245,196,0,.06) 2px,transparent 2px);background-size:32px 32px}
     .stats-feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem}
-    @media(max-width:800px){.stats-feature-grid{grid-template-columns:1fr}}
 
     /* Days counter */
     .days-card{background:var(--surface2);border:3px solid var(--lego-yellow);border-radius:6px;padding:2rem;text-align:center;box-shadow:5px 5px 0 var(--lego-red);display:flex;flex-direction:column;align-items:center;gap:.8rem}
@@ -366,9 +402,9 @@
     .fill-blue{background:linear-gradient(90deg,#004a80,var(--lego-blue))}
 
     /* Bar chart */
-    .chart-card{background:var(--surface2);border:2px solid var(--border);border-radius:6px;padding:2rem;grid-column:1/-1}
+    .chart-card{background:var(--surface2);border:2px solid var(--border);border-radius:6px;padding:2rem;grid-column:1/-1;overflow:visible}
     .chart-card h3{font-family:var(--font-head);font-size:.62rem;color:var(--lego-yellow);margin-bottom:1.8rem;line-height:1.7}
-    .chart-bars{display:flex;align-items:flex-end;gap:.5rem;height:160px;padding-bottom:0}
+    .chart-bars{display:flex;align-items:flex-end;gap:.5rem;min-height:200px;padding-bottom:0;overflow:visible}
     .chart-col{display:flex;flex-direction:column;align-items:center;flex:1;gap:.4rem}
     .chart-bar-wrap{width:100%;display:flex;align-items:flex-end;justify-content:center;flex:1}
     .chart-bar{width:100%;border-radius:4px 4px 0 0;min-height:4px;width:0;transition:width 0s;height:0;transition:height 1.2s cubic-bezier(.22,1,.36,1)}
@@ -480,6 +516,16 @@
       <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-2.75 12.08 12.08 0 00-7.64 0A4.83 4.83 0 014.41 6.69a50.56 50.56 0 000 10.62 4.83 4.83 0 003.77 2.75 12.08 12.08 0 007.64 0 4.83 4.83 0 003.77-2.75 50.56 50.56 0 000-10.62zM9.75 15V9l6 3z"/></svg>
       Suscribirse
     </a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menú" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="#historia"      onclick="closeMobileNav()">Historia</a>
+    <a href="#estadisticas"  onclick="closeMobileNav()">Estadísticas</a>
+    <a href="#interactivo"   onclick="closeMobileNav()">Zona Fan</a>
+    <a href="#juegos"        onclick="closeMobileNav()">Juegos</a>
+    <a href="#reconocimiento" onclick="closeMobileNav()">Éxito</a>
   </div>
   <div class="stripe"></div>
 </nav>
@@ -1109,6 +1155,16 @@
     });
   }
 
+  /* NAV hamburger */
+  function toggleMobileNav(){
+    document.getElementById('navMobile').classList.toggle('open');
+    document.getElementById('navHamburger').classList.toggle('open');
+  }
+  function closeMobileNav(){
+    document.getElementById('navMobile').classList.remove('open');
+    document.getElementById('navHamburger').classList.remove('open');
+  }
+
   /* NAV shrink */
   const nav=document.getElementById('navbar');
   window.addEventListener('scroll',()=>{
@@ -1167,7 +1223,7 @@
       {year:'2024',subs:800000,color:'bar-yellow'},
       {year:'2025',subs:821000,color:'bar-yellow'},
     ];
-    const MAX_H = 140; // px — altura máxima de la barra en el contenedor
+    const MAX_H = 160; // px — altura máxima de la barra
     const max = Math.max(...data.map(d=>d.subs));
     const container = document.getElementById('chartBars');
     if(!container) return;
@@ -1416,12 +1472,15 @@
       ruletaAngle = startAngle + extraSpins*easeOut(t);
       ruletaDraw(ruletaAngle);
       if(t<1){ requestAnimationFrame(frame); return; }
-      // Find winner
+      // Find winner — the pointer is at the top (-π/2).
+      // Segment i starts at: ruletaAngle + i*slice - π/2
+      // Pointer is within segment i when: ruletaAngle + i*slice - π/2 <= -π/2 < ruletaAngle + (i+1)*slice - π/2
+      // => i = floor(-ruletaAngle / slice) mod n
       const n = ruletaGames.length;
       const slice = (2*Math.PI)/n;
-      const norm = ((-ruletaAngle%(2*Math.PI))+(2*Math.PI))%(2*Math.PI);
-      const idx = Math.floor(norm/slice)%n;
-      const winner = ruletaGames[(n-idx)%n];
+      const norm = ((-ruletaAngle % (2*Math.PI)) + (2*Math.PI)) % (2*Math.PI);
+      const idx = Math.floor(norm / slice) % n;
+      const winner = ruletaGames[idx];
       document.getElementById('ruletaResult').textContent = winner;
       ruletaSpinCount++;
       ruletaHistory.push({game: winner, num: ruletaSpinCount});
